@@ -1,0 +1,8 @@
+{
+    "name": "stop",
+    "version": "1.0.0",
+    "description": "stop on heroku",
+    "dependencies": {
+      "harp": "*"
+    }
+  }

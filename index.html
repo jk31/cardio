@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- https://hackerthemes.com/bootstrap-cheatsheet/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+    <title>
+
+    </title>
+
+</head>
+
+<style>
+    .col-4 {
+        text-align: center;
+        font-size: 80px;
+        font-weight: bold;
+        color: white;
+        border: 1px solid white;
+        background-color: green;
+    }
+
+    button {
+        font-size: 40px !important;
+    }
+
+    #results {
+        font-size: 25px;
+    }
+
+    #buttons {
+        display: flex;
+        justify-content: space-around;
+    }
+</style>
+
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 field" id="7">
+                7
+            </div>
+            <div class="col-4 field" id="8">
+                8
+            </div>
+            <div class="col-4 field" id="1">
+                1
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 field" id="6">
+                6
+            </div>
+            <div class="col-4" id="counter" style="background-color: white; color: black; font-weight: normal;">
+                0
+            </div>
+            <div class="col-4 field" id="2">
+                2
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 field" id="5">
+                5
+            </div>
+            <div class="col-4 field" id="4">
+                4
+            </div>
+            <div class="col-4 field" id="3">
+                3
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" style="text-align: center;">
+        <p style="font-size: 80px;">
+            <span id="seconds">00</span>:<span id="tens">00</span>
+        </p>
+
+        <div id="buttons">
+            <!-- <button type="button" class="btn btn-success" id="button-start">Start</button> -->
+            <button type="button" class="btn btn-danger" id="button-stop">Stop</button>
+            <button type="button" class="btn btn-primary" id="button-reset">Reset</button>
+        </div>
+
+        <div id="results">
+            <p>
+                Alle (<span id="numbers-len">0</span>): <br> <span id="numbers">-</span>
+            </p>
+            <p>
+                Kurz (<span id="not-diag-len">0</span>): <br> <span id="not-diag">-</span>
+            </p>
+            <p>
+                Lang (<span id="diag-len">0</span>): <br> <span id="diag">-</span>
+            </p>
+        </div>
+    </div>
+
+    <div>
+
+    </div>
+
+    <script>
+        var counter = 0;
+        var numbers = [];
+
+        var diag = [];
+        var not_diag = [];
+        var start = false;
+
+        $(document).ready(function () {
+            console.log("ready!");
+            $(".field").click(function () {
+                counter += 1;
+                number = $(this).attr("id")
+                numbers.push(number)
+
+                if (number % 2 == 0) {
+                    not_diag.push(number);
+                    $("#not-diag").text(not_diag.toString());
+                } else if (number) {
+                    diag.push(number);
+                    $("#diag").text(diag.toString());
+                }
+
+                $("#numbers").text(numbers.toString());
+                
+
+                $("#not-diag-len").text(not_diag.length);
+                $("#diag-len").text(diag.length);
+                $("#numbers-len").text(numbers.length);
+
+                $("#counter").text(counter);
+            });
+        });
+
+        window.onload = function () {
+            var seconds = 00;
+            var tens = 00;
+            var appendTens = document.getElementById("tens")
+            var appendSeconds = document.getElementById("seconds")
+            var buttonStart = document.getElementById('button-start');
+            var buttonStop = document.getElementById('button-stop');
+            var buttonReset = document.getElementById('button-reset');
+            var Interval;
+            var counterText = document.getElementById("counter");
+
+            $(".field").click(function () {
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 10);
+            });
+
+            /*
+            buttonStart.onclick = function () {
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 10);
+            }
+            */
+
+            buttonStop.onclick = function () {
+                clearInterval(Interval);
+                console.log(numbers);
+            }
+
+            buttonReset.onclick = function () {
+                clearInterval(Interval);
+                tens = "00";
+                seconds = "00";
+                appendTens.innerHTML = tens;
+                appendSeconds.innerHTML = seconds;
+
+
+                counter = 0;
+                numbers = [];
+                diag = [];
+                not_diag = [];
+
+                // $("#numbers").text(1);
+                document.getElementById("numbers").innerHTML = "-";
+                document.getElementById("diag").innerHTML = "-";
+                document.getElementById("not-diag").innerHTML = "-";
+                document.getElementById("numbers-len").innerHTML = 0;
+                document.getElementById("diag-len").innerHTML = 0;
+                document.getElementById("not-diag-len").innerHTML = 0;
+                document.getElementById("counter").innerHTML = 0;
+
+            }
+
+            function startTimer() {
+                tens++;
+                if (tens < 9) {
+                    appendTens.innerHTML = "0" + tens;
+                }
+
+                if (tens > 9) {
+                    appendTens.innerHTML = tens;
+
+                }
+                if (tens > 99) {
+                    seconds++;
+                    appendSeconds.innerHTML = "0" + seconds;
+                    tens = 0;
+                    appendTens.innerHTML = "0" + 0;
+                }
+                if (seconds > 9) {
+                    appendSeconds.innerHTML = seconds;
+                }
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>
